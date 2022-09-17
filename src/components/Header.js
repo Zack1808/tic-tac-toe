@@ -10,8 +10,9 @@ const Header = () => {
     return ( 
         <div className='header'>
             <div className="title">Tic Tac Toe</div>
-            <div className="button">
+            <div className="buttons">
                 <Link>Return to Home</Link>
+                <button>Toogle dark mode</button>
             </div>
         </div>
     )    

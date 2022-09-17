@@ -8,13 +8,21 @@
 
 .title {
     display: flex;
+    font-family: 'Rubik Dirt', cursive;
     justify-content: center;
-    width: 50%;
-    font-size: calc(2em + 2vw);
+    width: 30%;
+    font-size: calc(1em + 2vw);
     font-weight: 900;
 }
 
-.button a{
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+}
+
+.buttons a,
+.buttons button{
     text-decoration: none;
     display: flex;
     padding: 10px 10px;
@@ -24,8 +32,11 @@
     font-weight: 700;
     transition: transform .5s;
     font-size: calc(.5em + .5vw);
+    background: none;
 }
-.button a:hover{
+.buttons a:hover,
+.buttons button:hover{
     transform: scale(1.1);
     cursor: pointer;
 }
+
