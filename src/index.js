@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Importing the App component 
 import App from './components/App';
@@ -8,4 +8,4 @@ import App from './components/App';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // Rendering the App component to root div
-root.render(<App />)
+root.render(<App />);
