@@ -11,8 +11,7 @@ const Header = () => {
         <div className='header'>
             <div className="title">Tic Tac Toe</div>
             <div className="buttons">
-                <Link>Return to Home</Link>
-                <button>Toogle dark mode</button>
+                <Link to="/">Return to Home</Link>
             </div>
         </div>
     )    

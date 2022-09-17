@@ -1,6 +1,6 @@
 .header {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     padding: 20px 0;
     width: 100%;
     align-items: center;
@@ -10,15 +10,18 @@
     display: flex;
     font-family: 'Rubik Dirt', cursive;
     justify-content: center;
-    width: 30%;
-    font-size: calc(1em + 2vw);
+    width: 50%;
+    font-size: calc(1.3em + 2vw);
     font-weight: 900;
+    padding: 10px 0;
 }
 
 .buttons {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     width: 50%;
+    align-items: center;
+    padding: 10px 0;
 }
 
 .buttons a,
@@ -39,4 +42,3 @@
     transform: scale(1.1);
     cursor: pointer;
 }
-
