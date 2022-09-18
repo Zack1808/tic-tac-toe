@@ -12,10 +12,12 @@ import '../css/App.css';
 const App = () => {
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <Header />
-            <Routes>
-                <Route path='/' exact element={<Menu />} />
-            </Routes>
+            <div className="container">
+                <Header />
+                <Routes>
+                    <Route path='/' exact element={<Menu />} />
+                </Routes>
+            </div>
         </BrowserRouter>
     )
 };

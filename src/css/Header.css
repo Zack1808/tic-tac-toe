@@ -4,12 +4,15 @@
     padding: 20px 0;
     width: 100%;
     align-items: center;
+    position: fixed;
+    top: 0
 }
 
 .title {
     display: flex;
     font-family: 'Rubik Dirt', cursive;
     justify-content: center;
+    align-items: center;
     width: 50%;
     font-size: calc(1.3em + 2vw);
     font-weight: 900;

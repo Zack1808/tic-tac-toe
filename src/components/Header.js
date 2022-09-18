@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { UilCircle, UilTimes } from '@iconscout/react-unicons'
 
 
 // Importing the style file 
@@ -9,7 +10,7 @@ import '../css/Header.css';
 const Header = () => {
     return ( 
         <div className='header'>
-            <div className="title">Tic Tac Toe</div>
+            <h2 className='title'><UilCircle size="50" />&nbsp; Tic Tac Toe <UilTimes size="70" /></h2>
             <div className="buttons">
                 <Link to="/">Return to Home</Link>
             </div>

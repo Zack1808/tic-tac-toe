@@ -4,8 +4,15 @@
     justify-content: space-around;
     align-items: center;
     margin: 0 auto;
-    padding: 100px 0 40px;
-    min-height: 40vh;
+}
+
+.menu h2{
+    font-family: 'Rubik Dirt', cursive;
+    font-size: calc(2em + 1vw) !important;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .menu button{
@@ -19,6 +26,7 @@
     transition: transform .5s;
     font-size: calc(.5em + .5vw);
     background: none;
+    margin: 10px 0;
 }
 
 .menu button:hover{
