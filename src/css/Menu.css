@@ -18,7 +18,8 @@
 .menu button{
     text-decoration: none;
     display: flex;
-    padding: 10px 10px;
+    align-items: center;
+    padding: 5px 10px;
     border-radius: 10px;
     border: 4px solid #000;
     color: #000;
@@ -29,7 +30,25 @@
     margin: 10px 0;
 }
 
+.menu button .icon {
+    opacity: 0;
+    transition: opacity .5s;
+}
+
 .menu button:hover{
     transform: scale(1.1);
     cursor: pointer;
+}
+
+.menu button:hover .icon {
+    opacity: 1;
+}
+
+.dark .menu h2 {
+    color: #fff !important;
+}
+
+.dark .menu button {
+    color: #fff !important;
+    border-color: #fff;
 }

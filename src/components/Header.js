@@ -10,10 +10,7 @@ import '../css/Header.css';
 const Header = () => {
     return ( 
         <div className='header'>
-            <h2 className='title'><UilCircle size="50" />&nbsp; Tic Tac Toe <UilTimes size="70" /></h2>
-            <div className="buttons">
-                <Link to="/">Return to Home</Link>
-            </div>
+            <Link to="/"><h2 className='title'><UilCircle size="50" />&nbsp; Tic Tac Toe <UilTimes size="70" /></h2></Link>
         </div>
     )    
 }

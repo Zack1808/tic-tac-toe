@@ -8,40 +8,22 @@
     top: 0
 }
 
+.header a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #000;
+}
+
 .title {
     display: flex;
     font-family: 'Rubik Dirt', cursive;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    font-size: calc(1.3em + 2vw);
+    font-size: calc(1.5em + 2vw);
     font-weight: 900;
     padding: 10px 0;
 }
 
-.buttons {
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.buttons a,
-.buttons button{
-    text-decoration: none;
-    display: flex;
-    padding: 10px 10px;
-    border-radius: 10px;
-    border: 4px solid #000;
-    color: #000;
-    font-weight: 700;
-    transition: transform .5s;
-    font-size: calc(.5em + .5vw);
-    background: none;
-}
-.buttons a:hover,
-.buttons button:hover{
-    transform: scale(1.1);
-    cursor: pointer;
+.dark .title {
+    color: #fff !important;
 }

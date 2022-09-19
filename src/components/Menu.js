@@ -8,10 +8,10 @@ import '../css/Menu.css';
 const Menu = () => {
     return (
         <div className='menu'>
-            <h2><UilCircle size="50" />&nbsp;&nbsp; Menu <UilTimes size="70" /></h2>
-            <button>Player VS. AI</button>
-            <button>Player VS. Player</button>
-            <button>Toogle dark mode</button>
+            <h2><UilCircle size="50" />&nbsp; Menu <UilTimes size="70" /></h2>
+            <button><UilCircle className="icon"/>&nbsp; Player VS. AI <UilTimes size="35" className="icon" /></button>
+            <button><UilCircle className="icon"/>&nbsp; Player VS. Player <UilTimes size="35" className="icon" /></button>
+            <button><UilCircle className="icon"/>&nbsp; Toogle Dark Mode <UilTimes size="35" className="icon" /></button>
         </div>
     )
 };
