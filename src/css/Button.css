@@ -1,0 +1,39 @@
+ button,
+.button{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 4px solid #000;
+    color: #000;
+    font-weight: 700;
+    transition: transform .5s;
+    font-size: calc(.5em + .5vw);
+    background: none;
+    margin: 10px 0;
+}
+
+button .icon,
+.button .icon {
+    opacity: 0;
+    transition: opacity .5s;
+}
+
+button:hover,
+.button:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+button:hover .icon,
+.button:hover .icon {
+    opacity: 1;
+}
+
+.dark button,
+.dark .button{
+    color: #fff !important;
+    border-color: #fff;
+}

@@ -1,0 +1,30 @@
+.game-options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.single-player {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark .single-player {
+    color: #fff !important;
+}
+
+.multiplayer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.dark .multiplayer {
+    color: #fff !important;
+}
