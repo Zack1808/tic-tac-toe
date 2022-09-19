@@ -7,6 +7,7 @@ import Menu from './Menu';
 
 // Importing the style file
 import '../css/App.css';
+import Footer from './Footer';
 
 // Creating the App component
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
                 <Routes>
                     <Route path='/' exact element={<Menu />} />
                 </Routes>
+                <Footer />
             </div>
         </BrowserRouter>
     )
