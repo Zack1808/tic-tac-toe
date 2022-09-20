@@ -9,16 +9,18 @@ import Menu from './Menu';
 import '../css/App.css';
 import Footer from './Footer';
 import GameOptions from './GameOptions';
+import GameBoard from './GameBoard';
 
 // Creating the App component
 const App = () => {
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <div className="container dark">
+            <div className="container">
                 <Header />
                 <Routes>
                     <Route path='/' exact element={<Menu />} />
                     <Route path='/game-options' element={<GameOptions />} />
+                    <Route path='/gameboard/1v1' element={<GameBoard />} />
                 </Routes>
                 <Footer />
             </div>
