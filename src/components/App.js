@@ -15,7 +15,7 @@ import GameBoard from './GameBoard';
 const App = () => {
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <div className="container">
+            <div className="container dark">
                 <Header />
                 <Routes>
                     <Route path='/' exact element={<Menu />} />
