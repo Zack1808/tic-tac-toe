@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import '../css/Button.css'
 
 // Creating the Button component
-const Button = ({ link, text }) => {
+const Button = ({ link, text, click = "" }) => {
     return(
         <>
             {link ? (
-                <Link to={link} className="button"><UilCircle className="icon"/>&nbsp; {text} <UilTimes size="35" className="icon" /></Link>
+                <Link onClick={click} to={link} className="button"><UilCircle className="icon"/>&nbsp; {text} <UilTimes size="35" className="icon" /></Link>
             ) : (
-                <button><UilCircle className="icon"/>&nbsp; {text} <UilTimes size="35" className="icon" /></button>
+                <button onClick={click}><UilCircle className="icon"/>&nbsp; {text} <UilTimes size="35" className="icon" /></button>
             )}
         </>
     )

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { UilUser, UilCircle, UilTimes } from '@iconscout/react-unicons'
 
 // Importing costume made components
 import Input from './Input';
@@ -16,15 +14,15 @@ const GameOptions = () => {
             {/* <div className="single-player">
                 <Input />
                 <div className="buttons">
-                    <Button link="/gameboard/easy" text="Easy Mode" />
-                    <Button link="/gameboard/normal" text="Normal Mode" />
-                    <Button link="/gameboard/Hard" text="Hard Mode" />
+                    <Button link="/gameboard" text="Easy Mode" />
+                    <Button link="/gameboard" text="Normal Mode" />
+                    <Button link="/gameboard" text="Hard Mode" />
                 </div>
             </div> */}
             <div className="multiplayer">
                 <Input />
                 <Input />
-                <Button link="/gameboard/1v1" text="Start Game" />
+                <Button link="/gameboard" text="Start Game" />
             </div>
         </div>
     )

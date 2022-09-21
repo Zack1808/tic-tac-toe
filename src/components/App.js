@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // Importing the costume made components
@@ -13,14 +13,17 @@ import GameBoard from './GameBoard';
 
 // Creating the App component
 const App = () => {
+
+    const [dark, setDark] = useState(false);
+
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <div className="container dark">
+            <div className={`container ${dark && "dark"}`}>
                 <Header />
                 <Routes>
-                    <Route path='/' exact element={<Menu />} />
+                    <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} />} />
                     <Route path='/game-options' element={<GameOptions />} />
-                    <Route path='/gameboard/1v1' element={<GameBoard />} />
+                    <Route path='/gameboard' element={<GameBoard />} />
                 </Routes>
                 <Footer />
             </div>
