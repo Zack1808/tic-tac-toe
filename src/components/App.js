@@ -15,6 +15,7 @@ import GameBoard from './GameBoard';
 const App = () => {
 
     const [dark, setDark] = useState(false);
+    const [singlePlayer, setSinglePlayer] = useState(null);
 
     // Setting the dark mode status to the previous state before refreshing
     useEffect(() => {
@@ -35,8 +36,8 @@ const App = () => {
             <div className={`container ${dark && "dark"}`}>
                 <Header />
                 <Routes>
-                    <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} />} />
-                    <Route path='/game-options' element={<GameOptions />} />
+                    <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} setSinglePlayer={setSinglePlayer} />} />
+                    <Route path='/game-options' element={<GameOptions singlePlayer={singlePlayer} />} />
                     <Route path='/gameboard' element={<GameBoard />} />
                 </Routes>
                 <Footer />
