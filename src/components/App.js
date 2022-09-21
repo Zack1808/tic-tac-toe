@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // Importing the costume made components
@@ -15,6 +15,20 @@ import GameBoard from './GameBoard';
 const App = () => {
 
     const [dark, setDark] = useState(false);
+
+    // Setting the dark mode status to the previous state before refreshing
+    useEffect(() => {
+        let darkMode = localStorage.getItem('ttt-dark-mode');
+        if(darkMode) {
+            darkMode = JSON.parse(darkMode);
+            setDark(darkMode);
+        }
+    }, [])
+
+    // Storing the dark mode state, so that the app stays in which ever mode the user left it afer refreshing
+    useEffect(() => {
+        localStorage.setItem('ttt-dark-mode', JSON.stringify(dark));
+    }, [dark])
 
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
