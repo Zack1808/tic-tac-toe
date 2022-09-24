@@ -37,7 +37,7 @@ const App = () => {
                 <Header />
                 <Routes>
                     <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} setSinglePlayer={setSinglePlayer} />} />
-                    <Route path='/game-options' element={<GameOptions singlePlayer={singlePlayer} />} />
+                    <Route path='/game-options' element={<GameOptions />} />
                     <Route path='/gameboard' element={<GameBoard />} />
                 </Routes>
                 <Footer />

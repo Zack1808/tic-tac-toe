@@ -27,7 +27,7 @@ const Menu = ({ toggleDark, dark, setSinglePlayer }) => {
     return (
         <div className='menu'>
             <h2><UilCircle size="50" />&nbsp; Menu <UilTimes size="70" /></h2>
-            <Button link="/game-options" text="Player Vs. Player" click={multiPlayer} />
+            <Button link="/gameboard" text="Player Vs. Player" click={multiPlayer} />
             <Button link="/game-options" text="Player Vs. AI" click={singlePlayer} />
             <Button text="Toogle Dark Mode" click={toggleDarkMode} />
         </div>
