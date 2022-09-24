@@ -34,8 +34,78 @@
     align-items: center;
     font-size: calc(3em + 1vw);
     font-weight: 900;
+    position: relative;
+    cursor: pointer;
 }
 
 .dark .field {
     border-color: #fff;
+}
+
+.field.x::before, .game-board.x .field:not(.x):not(.circle):hover::before {
+    transform: rotate(45deg);
+}
+
+.field.x::after, .game-board.x .field:not(.x):not(.circle):hover::after {
+    transform: rotate(-45deg);
+}
+
+.field.x::before, .field.x::after, .game-board.x .field:not(.x):not(.circle):hover::before, .game-board.x .field:not(.x):not(.circle):hover::after {
+    content: '';
+    position: absolute;
+    width: calc(90% * .15);
+    height: 90%;
+    background-color: #000;
+    border-radius: 10px;
+}
+
+.dark .field.x::before, .dark .field.x::after, .dark .game-board.x .field:not(.x):not(.circle):hover::before, .dark .game-board.x .field:not(.x):not(.circle):hover::after {
+    content: '';
+    background: #fff;
+}
+
+.game-board.x .field:not(.x):not(.circle):hover::before, .game-board.x .field:not(.x):not(.circle):hover::after {
+    background-color: #444 ;
+}
+
+.dark .game-board.x .field:not(.x):not(.circle):hover::before, .dark .game-board.x .field:not(.x):not(.circle):hover::after {
+    background-color: #aaa ;
+}
+
+.field.circle::before, .game-board.circle .field:not(.x):not(.circle):hover::before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.field.circle::after, .game-board.circle .field:not(.x):not(.circle):hover::after {
+    content: '';
+    position: absolute;
+    width: 55%;
+    height: 55%;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.dark .field.circle::before, .dark .game-board.circle .field:not(.x):not(.circle):hover::before  {
+    background: #fff;
+}
+
+.dark .field.circle::after,  .dark .game-board.circle .field:not(.x):not(.circle):hover::after {
+    background:rgb(40, 40, 40)
+}
+
+.dark .game-board.circle .field:not(.x):not(.circle):hover::before {
+    background-color: #aaa ;
+}
+
+.game-board.circle .field:not(.x):not(.circle):hover::before {
+    background-color: #444 ;
+}
+
+.field.x, .field.circle{
+    cursor: not-allowed
 }
