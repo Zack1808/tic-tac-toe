@@ -12,10 +12,21 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
 
     const [gameover, setGameover] = useState(false);
     const winningFields = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    const gameFields = document.querySelectorAll('[data-value]');
+
+    // Function that checks if a player won 
+    const checkWin = () => {
+        return winningFields.some(winningField => {
+            return winningField.every(index => {
+                return gameFields[index].classList.contains(turn ? "x" : "circle");
+            })
+        })
+    }
 
     // Funciton that will handle the input for multiplayer
     const multiplayerGame = (e) => {
-        setTurn(!turn);
+        turn ? e.target.classList.add('x') : e.target.classList.add('circle');
+        if(!checkWin()) setTurn(!turn);
     }
 
     // Function that will handle input for singleplayer
