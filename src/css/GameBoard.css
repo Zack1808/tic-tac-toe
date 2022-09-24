@@ -29,6 +29,11 @@
     width: 32%;
     height: 100%;
     border: 5px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(3em + 1vw);
+    font-weight: 900;
 }
 
 .dark .field {
