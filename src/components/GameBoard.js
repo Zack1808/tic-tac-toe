@@ -27,6 +27,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
     const multiplayerGame = (e) => {
         turn ? e.target.classList.add('x') : e.target.classList.add('circle');
         if(!checkWin()) setTurn(!turn);
+        else setGameover(true);
     }
 
     // Function that will handle input for singleplayer
@@ -41,23 +42,23 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
     }
 
     return (
-        <div className={`game-board ${turn ? 'x' : 'circle'}`}>
+        <div className={`game-board ${!gameover && (turn ? 'x' : 'circle')}`}>
             <Score turn={turn} />
             <div className="game">
                 <div className="row">
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
                 </div>
                 <div className="row">
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
                 </div>
                 <div className="row">
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
-                    <div className="field" data-value onClick={handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
+                    <div className="field" data-value onClick={!gameover && handleClick}></div>
                 </div>
             </div>
         </div>
