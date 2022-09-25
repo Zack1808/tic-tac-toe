@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { UilCircle, UilTimes } from '@iconscout/react-unicons'
+import React, { useState, useEffect } from 'react';
 
 // Importing costume made components
 import Score from './Score';
@@ -12,8 +11,14 @@ import Modal from './Modal';
 const GameBoard = ({ turn, setTurn, singlePlayer }) => {
 
     const [gameover, setGameover] = useState(false);
+    const [scoreX, setScoreX] = useState(0);
+    const [scoreO, setScoreO] = useState(0);
     const winningFields = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-    const gameFields = document.querySelectorAll('[data-value]');
+    let gameFields = document.querySelectorAll('[data-value]');
+
+    useEffect(() => {
+        gameFields = document.querySelectorAll('[data-value]');
+    }, [])
 
     // Function that checks if a player won 
     const checkWin = () => {
@@ -27,9 +32,14 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
     // Funciton that will handle the input for multiplayer
     const multiplayerGame = (e) => {
         if(!gameover) {
-            turn ? e.target.classList.add('x') : e.target.classList.add('circle');
-            if(!checkWin()) setTurn(!turn);
-            else setGameover(true);
+            if(!(e.target.classList.contains('x') || e.target.classList.contains("circle")))  {
+                turn ? e.target.classList.add('x') : e.target.classList.add('circle');
+                if(!checkWin()) setTurn(!turn);
+                else {
+                    setGameover(true);
+                    turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
+                };
+            }
         }
     }
 
@@ -47,7 +57,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
     return (
         <>
             <div className={`game-board ${!gameover && (turn ? 'x' : 'circle')}`}>
-                <Score turn={turn} />
+                <Score turn={turn} scoreX={scoreX} scoreO={scoreO} />
                 <div className="game">
                     <div className="row">
                         <div className="field" data-value onClick={handleClick}></div>
@@ -67,7 +77,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
                 </div>
             </div> 
             {
-                gameover ? <Modal /> : null
+                gameover ? <Modal setGameover={setGameover} turn={turn} setTurn={setTurn} fields={gameFields} /> : null
             }
         </>      
     )

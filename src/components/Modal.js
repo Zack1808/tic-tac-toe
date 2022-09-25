@@ -12,14 +12,24 @@ const modalScreen = document.getElementById('modal');
 
 
 // Creating the Mondal compoment
-const Modal = () => {
+const Modal = ({ setGameover, turn, setTurn, fields}) => {
 
     const handleReplay = () => {
-
+        setTurn(!turn);
+        fields.forEach(field => {
+            field.classList.remove('x');
+            field.classList.remove('circle')
+        })
+        setGameover(false)
     }
 
     const handleReset = () => {
-
+        setTurn(true);
+        fields.forEach(field => {
+            field.classList.remove('x');
+            field.classList.remove('circle')
+        })
+        setGameover(false);
     }
 
     return ReactDOM.createPortal(
@@ -30,7 +40,7 @@ const Modal = () => {
                 </div>
                 <hr />
                 <div className="modal-content">
-                    <h2>Player X has won!</h2>
+                    <h2>{turn ? 'Player X': 'Player O'} has won!</h2>
                     <div className="modal-buttons">
                         <Button text="Play again!" click={handleReplay} />
                         <Button link="/" text="Return to Menu" click={handleReset} />

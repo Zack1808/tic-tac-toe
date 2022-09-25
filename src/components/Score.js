@@ -4,10 +4,10 @@ import React from 'react';
 import '../css/Score.css';
 
 // Creating the score component
-const Score = ({ turn }) => {
+const Score = ({ turn, scoreX, scoreO }) => {
     return (
         <div className='score'>
-            <div className="player-one-score">Player X: 0</div>
+            <div className="player-one-score">Player X: {scoreX}</div>
             <div className="current-turn">
                 <p>Current turn:</p>
                 {
@@ -18,7 +18,7 @@ const Score = ({ turn }) => {
                     )
                 }
             </div>
-            <div className="player-two-score">Player O: 0</div>
+            <div className="player-two-score">Player O: {scoreO}</div>
         </div>
     )
 }
