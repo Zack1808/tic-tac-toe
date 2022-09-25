@@ -13,6 +13,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
     const [gameover, setGameover] = useState(false);
     const [scoreX, setScoreX] = useState(0);
     const [scoreO, setScoreO] = useState(0);
+    const [draw, setDraw] = useState(false)
     const winningFields = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     let gameFields = document.querySelectorAll('[data-value]');
 
@@ -29,12 +30,24 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
         })
     }
 
+    // Function that will check if it is a draw
+    const checkDraw = () => {
+        gameFields = Array.from(gameFields)
+        return gameFields.every(field => {
+            return field.classList.contains('x') || field.classList.contains('circle');
+        })
+    }
+
     // Funciton that will handle the input for multiplayer
     const multiplayerGame = (e) => {
         if(!gameover) {
             if(!(e.target.classList.contains('x') || e.target.classList.contains("circle")))  {
                 turn ? e.target.classList.add('x') : e.target.classList.add('circle');
                 if(!checkWin()) setTurn(!turn);
+                else if(checkDraw()) {
+                    setGameover(true);
+                    setDraw(true)
+                }
                 else {
                     setGameover(true);
                     turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
@@ -77,7 +90,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer }) => {
                 </div>
             </div> 
             {
-                gameover ? <Modal setGameover={setGameover} turn={turn} setTurn={setTurn} fields={gameFields} /> : null
+                gameover ? <Modal setGameover={setGameover} turn={turn} setTurn={setTurn} fields={gameFields} setDraw={setDraw} draw={draw} /> : null
             }
         </>      
     )
