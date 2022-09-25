@@ -25,15 +25,17 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     }, []);
 
     useEffect(() => {
-            if(checkDraw()) {
-                setGameover(true);
-                setDraw(true)
+            if(!gameover){
+                if(checkDraw()) {
+                    setGameover(true);
+                    setDraw(true)
+                }
+                else if(!checkWin()) setTurn(!turn);
+                else {
+                    setGameover(true);
+                    turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
+                };
             }
-            else if(!checkWin()) setTurn(!turn);
-            else {
-                setGameover(true);
-                turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
-            };
     }, [spot])
 
     // Function that checks if a player won 
@@ -83,7 +85,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                 let ind = spots[Math.floor(Math.random() * spots.length)];
                 const fields = Array.from(gameFields);
                 turn ? fields[ind].classList.add('circle') : fields[ind].classList.add('x');
-            }, 500)
+            }, 10)
         }
     }
 
@@ -99,10 +101,12 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that will handle input for singleplayer
     const singlePlayerGame = (e) => {
-        placeSign(e)
-        if(gameMode === "easy") handleEasyMode();
-        else if(gameMode === "normal") handleNormalMode();
-        else handleHardMode();
+        if(!gameover && !turn) {
+            placeSign(e)
+            if(gameMode === "easy") handleEasyMode();
+            else if(gameMode === "normal") handleNormalMode();
+            else handleHardMode();
+        }
     }
 
     // Function that will handle the input of the 

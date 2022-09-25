@@ -36,7 +36,7 @@ const App = () => {
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
             <div className={`container ${dark && "dark"}`}>
-                <Header />
+                <Header setTurn={setTurn} />
                 <Routes>
                     <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} setSinglePlayer={setSinglePlayer} />} />
                     <Route path='/game-options' element={<GameOptions gameMode={gameMode} setGameMode={setGameMode} />} />
