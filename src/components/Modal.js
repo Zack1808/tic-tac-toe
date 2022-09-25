@@ -12,10 +12,10 @@ const modalScreen = document.getElementById('modal');
 
 
 // Creating the Mondal compoment
-const Modal = ({ setGameover, turn, setTurn, fields, setDraw, draw}) => {
+const Modal = ({ setGameover, turn, setTurn, fields, setDraw, draw, singlePlayer, setSingleplayer}) => {
 
     const handleReplay = () => {
-        setTurn(!turn);
+        singlePlayer ? setTurn(false) : setTurn(!turn);
         fields.forEach(field => {
             field.classList.remove('x');
             field.classList.remove('circle')
@@ -25,7 +25,8 @@ const Modal = ({ setGameover, turn, setTurn, fields, setDraw, draw}) => {
     }
 
     const handleReset = () => {
-        setTurn(true);
+        setTurn(false);
+        setSingleplayer(true);
         fields.forEach(field => {
             field.classList.remove('x');
             field.classList.remove('circle')
@@ -38,7 +39,7 @@ const Modal = ({ setGameover, turn, setTurn, fields, setDraw, draw}) => {
         <div className="modal-container">
             <div className="modal-body">
                 <div className="modal-header">
-                    <h1>Congratulations!</h1>
+                    <h1>{singlePlayer ? (turn ? "Better luck next time!" : "Congratulations!" ) : "Congratulations!"}</h1>
                 </div>
                 <hr />
                 <div className="modal-content">

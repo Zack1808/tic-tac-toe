@@ -17,6 +17,7 @@ const App = () => {
     const [dark, setDark] = useState(false);
     const [singlePlayer, setSinglePlayer] = useState(null);
     const [turn, setTurn] = useState(true);
+    const [gameMode, setGameMode] = useState("easy");
 
     // Setting the dark mode status to the previous state before refreshing
     useEffect(() => {
@@ -38,8 +39,8 @@ const App = () => {
                 <Header />
                 <Routes>
                     <Route path='/' exact element={<Menu toggleDark={setDark} dark={dark} setSinglePlayer={setSinglePlayer} />} />
-                    <Route path='/game-options' element={<GameOptions />} />
-                    <Route path='/gameboard' element={<GameBoard turn={turn} setTurn={setTurn} singlePlayer={singlePlayer}  />} />
+                    <Route path='/game-options' element={<GameOptions gameMode={gameMode} setGameMode={setGameMode} />} />
+                    <Route path='/gameboard' element={<GameBoard turn={turn} setTurn={setTurn} singlePlayer={singlePlayer} gameMode={gameMode} setGameMode={setGameMode} setSinglePlayer={setSinglePlayer} />} />
                 </Routes>
                 <Footer />
             </div>

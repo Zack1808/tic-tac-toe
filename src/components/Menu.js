@@ -18,10 +18,13 @@ const Menu = ({ toggleDark, dark, setSinglePlayer }) => {
     // Function that will set the single player status to true
     const singlePlayer = () => {
         setSinglePlayer(true);
+        localStorage.setItem('ttt-single-player-mode', JSON.stringify(true))
     }
 
+    // Function taht will set the singleplayer option to false
     const multiPlayer = () => {
         setSinglePlayer(false);
+        localStorage.setItem('ttt-single-player-mode', JSON.stringify(false))
     }
 
     return (
