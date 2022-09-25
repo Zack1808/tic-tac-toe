@@ -26,15 +26,15 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     useEffect(() => {
             if(!gameover){
-                if(checkDraw()) {
+                if(checkWin()) {
+                    setGameover(true);
+                    turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
+                }
+                else if(checkDraw()) {
                     setGameover(true);
                     setDraw(true)
                 }
-                else if(!checkWin()) setTurn(!turn);
-                else {
-                    setGameover(true);
-                    turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
-                };
+                else setTurn(!turn);
             }
     }, [spot])
 
@@ -111,8 +111,10 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that will handle the input of the 
     const handleClick = (e) => {
-        if(singlePlayer) singlePlayerGame(e);
-        else placeSign(e);
+        if(!(e.target.classList.contains("x") || e.target.classList.contains("circle"))){
+            if(singlePlayer) singlePlayerGame(e);
+            else placeSign(e);
+        }
     }
 
     return (
