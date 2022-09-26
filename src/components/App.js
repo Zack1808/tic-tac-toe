@@ -16,7 +16,7 @@ const App = () => {
 
     const [dark, setDark] = useState(false);
     const [singlePlayer, setSinglePlayer] = useState(null);
-    const [turn, setTurn] = useState(true);
+    const [turn, setTurn] = useState("x");
     const [gameMode, setGameMode] = useState("easy");
 
     // Setting the dark mode status to the previous state before refreshing

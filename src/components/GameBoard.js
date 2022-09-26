@@ -10,145 +10,74 @@ import Modal from './Modal';
 // Creating the GameBoard component
 const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSinglePlayer }) => {
 
-    const [gameover, setGameover] = useState(false);
-    const [scoreX, setScoreX] = useState(0);
-    const [scoreO, setScoreO] = useState(0);
-    const [draw, setDraw] = useState(false);
-    const [spot, setSpot] = useState();
-    const winningFields = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-    let gameFields = document.querySelectorAll('[data-value]');
+    // Setting up all wariables;
+    const [gameOver, setGameOver] = useState(false);
+    const [origBoard, setOrigBoard] = useState();
+    const player1 = "x"; const player2 = "circle";
+    const winningFields = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+    const cells = document.querySelectorAll("[data-value]");
 
+    // Will call the startGame function once the components have rendered
     useEffect(() => {
-        gameFields = document.querySelectorAll('[data-value]');
-        setGameMode(JSON.parse(localStorage.getItem("ttt-game-mode")))
-        setSinglePlayer(JSON.parse(localStorage.getItem("ttt-single-player-mode")))
+        startGame();
     }, []);
 
-    useEffect(() => {
-            if(!gameover){
-                if(checkWin()) {
-                    setGameover(true);
-                    turn ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
-                }
-                else if(checkDraw()) {
-                    setGameover(true);
-                    setDraw(true)
-                }
-                else setTurn(!turn);
+    // Function that will start the game
+    const startGame = () => {
+        setGameOver(false);
+        setOrigBoard(Array.from(Array(9).keys()))
+        cells.forEach(cell => {
+            cell.classList.remove(player1);
+            cell.classList.remove(player2);
+        })
+    }
+
+    // Function that will handle the field click event
+    const handleClick = (event) => {
+        if(!gameOver){
+            if(singlePlayer) changeTurn(Array.from(cells).indexOf(event.target), player1)
+            else changeTurn(Array.from(cells).indexOf(event.target), turn)
+        }
+    }
+
+    // Function taht will handle the turn change
+    const changeTurn = (index, currentPlayer) => {
+        let tempBoard = origBoard;
+        tempBoard[index] = currentPlayer;
+        setOrigBoard(tempBoard)
+        cells[index].classList.add(currentPlayer);
+        let gameWon = checkWin(origBoard, currentPlayer)
+        if(gameWon) setGameOver(true);
+        else setTurn(currentPlayer === "x" ? player2 : player1)
+    }
+
+    // Function that checks if the player won
+    const checkWin = (board, currentPlayer) => {
+        let placed = board.reduce((acc, elem, i) => (elem === currentPlayer) ? acc.concat(i) : acc, []);
+        let gameWon = null;
+        for(let [index, win] of winningFields.entries()) {
+            if(win.every(element => placed.indexOf(element) > -1)) {
+                gameWon = {index: index, currPlayer: currentPlayer};
+                break;
             }
-    }, [spot])
-
-    // Function that checks if a player won 
-    const checkWin = () => {
-        return winningFields.some(winningField => {
-            return winningField.every(index => {
-                return gameFields[index].classList.contains(turn ? "x" : "circle");
-            })
-        })
-    }
-
-    // Function that will check if it is a draw
-    const checkDraw = () => {
-        gameFields = Array.from(gameFields)
-        return gameFields.every(field => {
-            return field.classList.contains('x') || field.classList.contains('circle');
-        })
-    }
-
-    // Function that will place the sign on the board
-    const placeSign = (e) => {
-        if(!gameover) {
-            if(!(e.target.classList.contains('x') || e.target.classList.contains("circle")))  {
-                const spots = searchAvailableSpots();
-                setSpot(spots)
-                turn ? e.target.classList.add('x') : e.target.classList.add('circle');
-            }
         }
-    }
 
-    // Function that will give all the indexes of the available spots on the field
-    const searchAvailableSpots = () => {
-        const spots = Array.from(gameFields)
-        let available = [];
-        spots.forEach((spot, index) => {
-            if(!spot.classList.contains('x') && !spot.classList.contains('circle')) available.push(index);
-        })
-        return available
-    }
-
-    // Function that will handle the AI steps for easy mode
-    const handleEasyMode = () => {
-        if(!gameover){
-            setTimeout(() => {
-                const spots = searchAvailableSpots();
-                setSpot(spots);
-                let ind = spots[Math.floor(Math.random() * spots.length)];
-                const fields = Array.from(gameFields);
-                turn ? fields[ind].classList.add('circle') : fields[ind].classList.add('x');
-            }, 10)
-        }
-    }
-
-    // Function that will handle the AI steps for normal mode
-    const handleNormalMode = () => {
-        if(!gameover){
-            setTimeout(() => {
-                const spots = searchAvailableSpots();
-                setSpot(spots);
-                let ind = spots[Math.floor(Math.random() * spots.length)];
-                const fields = Array.from(gameFields);
-                let takenFieldCount = []
-                console.log(winningFields.forEach(field => {
-                    let count = 0;
-                    if(field.every(f => gameFields[f].classList.contains("x") || gameFields[f].classList.contains("circle"))) count = 3;
-                    else {
-                        field.forEach(f => {
-                            return gameFields[f].classList.contains(turn ? "x" : "circle") && count++;
-                        })
-                    }
-                    takenFieldCount.push(count);
-                }))
-                console.log(takenFieldCount)
-                const index = takenFieldCount.indexOf(2);
-                console.log(index);
-                if(index > -1){
-                    let i; 
-                    winningFields[index].forEach(ind => !((gameFields[ind].classList.contains("x") || gameFields[ind].classList.contains("circle"))) && (i = ind));
-                    console.log(i)
-                    turn ? fields[i].classList.add('circle') : fields[i].classList.add('x');
-                }
-                else turn ? fields[ind].classList.add('circle') : fields[ind].classList.add('x');
-            }, 10)
-        }
-    }
-
-    // Function that will handle the AI steps for hard mode
-    const handleHardMode = () => {
-
-    }
-
-    // Function that will handle input for singleplayer
-    const singlePlayerGame = (e) => {
-        if(!gameover && !turn) {
-            placeSign(e)
-            if(gameMode === "easy") handleEasyMode();
-            else if(gameMode === "normal") handleNormalMode();
-            else handleHardMode();
-        }
-    }
-
-    // Function that will handle the input of the 
-    const handleClick = (e) => {
-        if(!(e.target.classList.contains("x") || e.target.classList.contains("circle"))){
-            if(singlePlayer) singlePlayerGame(e);
-            else placeSign(e);
-        }
+        return gameWon;
     }
 
     return (
         <>
-            <div className={`game-board ${!gameover && (turn ? 'x' : 'circle')}`}>
-                <Score turn={turn} scoreX={scoreX} scoreO={scoreO} />
+            <div className={`game-board ${!gameOver && turn}`}>
+                {/* <Score turn={turn} scoreX={scoreX} scoreO={scoreO} /> */}
                 <div className="game">
                     <div className="row">
                         <div className="field" data-value onClick={handleClick}></div>
@@ -167,9 +96,9 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                     </div>
                 </div>
             </div> 
-            {
+            {/* {
                 gameover ? <Modal setGameover={setGameover} turn={turn} setTurn={setTurn} fields={gameFields} setDraw={setDraw} draw={draw} singlePlayer={singlePlayer} setSinglePlayer={setSinglePlayer} /> : null
-            }
+            } */}
         </>      
     )
 };
