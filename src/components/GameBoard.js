@@ -91,7 +91,35 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that will handle the AI steps for normal mode
     const handleNormalMode = () => {
-
+        if(!gameover){
+            setTimeout(() => {
+                const spots = searchAvailableSpots();
+                setSpot(spots);
+                let ind = spots[Math.floor(Math.random() * spots.length)];
+                const fields = Array.from(gameFields);
+                let takenFieldCount = []
+                console.log(winningFields.forEach(field => {
+                    let count = 0;
+                    if(field.every(f => gameFields[f].classList.contains("x") || gameFields[f].classList.contains("circle"))) count = 3;
+                    else {
+                        field.forEach(f => {
+                            return gameFields[f].classList.contains(turn ? "x" : "circle") && count++;
+                        })
+                    }
+                    takenFieldCount.push(count);
+                }))
+                console.log(takenFieldCount)
+                const index = takenFieldCount.indexOf(2);
+                console.log(index);
+                if(index > -1){
+                    let i; 
+                    winningFields[index].forEach(ind => !((gameFields[ind].classList.contains("x") || gameFields[ind].classList.contains("circle"))) && (i = ind));
+                    console.log(i)
+                    turn ? fields[i].classList.add('circle') : fields[i].classList.add('x');
+                }
+                else turn ? fields[ind].classList.add('circle') : fields[ind].classList.add('x');
+            }, 10)
+        }
     }
 
     // Function that will handle the AI steps for hard mode
