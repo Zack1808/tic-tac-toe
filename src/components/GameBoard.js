@@ -62,11 +62,41 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that chooses the best spot for the game
     const bestSpot = () => {
-        if(gameMode === "easy") {
-            const availablespots = emptyFields()
-            return origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)])
-        }
+        if(gameMode === "easy") return easyMode();
+        if(gameMode === "normal") return normalMode();
         if(gameMode === "hard") return hardMode(origBoard, player2).index;
+    }
+
+    // Function that will handle the easy mode
+    const easyMode = () => {
+        const availablespots = emptyFields()
+        return origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)])
+    }
+
+    // Function that will handle the normal mode 
+    const normalMode = () => {
+        const availablespots = emptyFields();
+        let amount = [];
+        let move = origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)]);
+        winningFields.forEach(win => {
+            let count = 0;
+            if(win.every(field => typeof origBoard[field] !== "number")) count = 20;
+            else {
+                win.forEach(field => {
+                    if(origBoard[field] == "x") count = count + 1;
+                    if(origBoard[field] === "circle") count = count + 2;
+                })
+            }
+            amount.push(count);
+        })
+        console.log(amount)
+        if(amount.indexOf(4) > -1) {
+            winningFields[amount.indexOf(4)].forEach(i => typeof origBoard[i] === "number" && (move = i));
+        }
+        else if(amount.indexOf(2) > -1){
+            winningFields[amount.indexOf(2)].forEach(i => typeof origBoard[i] === "number" && (move = i));
+        }
+        return move;
     }
 
     // Function that will handle the unbeateable AI 
