@@ -28,6 +28,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
         [2, 4, 6]
     ];
     const cells = document.querySelectorAll("[data-value]");
+    let available = [];
 
     // Will call the startGame function once the components have rendered
     useEffect(() => {
@@ -62,7 +63,9 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                 if(typeof origBoard[Array.from(cells).indexOf(event.target)] === "number"){
                     if(singlePlayer) {
                         changeTurn(Array.from(cells).indexOf(event.target), player1);
-                        if(!checkDraw()) changeTurn(bestSpot(), player2);
+                        if(!checkWin(origBoard, player1)) {
+                            if(!checkDraw()) changeTurn(bestSpot(), player2);
+                        }
                     }
                     else {
                         if(!checkDraw()) changeTurn(Array.from(cells).indexOf(event.target), turn);
@@ -189,6 +192,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
         const checkDraw = () => {
             if(emptyFields().length === 0) {
                 setDraw(true);
+                setGameOver(true);
                 return true;
             }
             return false;
