@@ -13,6 +13,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     // Setting up all wariables;
     const [gameOver, setGameOver] = useState(false);
     const [origBoard, setOrigBoard] = useState();
+    const [draw, setDraw] = useState(false);
     const player1 = "x"; const player2 = "circle";
     const winningFields = [
         [0, 1, 2],
@@ -34,6 +35,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     // Function that will start the game
     const startGame = () => {
         setGameOver(false);
+        setDraw(false);
         setOrigBoard(Array.from(Array(9).keys()))
         cells.forEach(cell => {
             cell.classList.remove(player1);
@@ -44,9 +46,79 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     // Function that will handle the field click event
     const handleClick = (event) => {
         if(!gameOver){
-            if(singlePlayer) changeTurn(Array.from(cells).indexOf(event.target), player1)
-            else changeTurn(Array.from(cells).indexOf(event.target), turn)
+            if(typeof origBoard[Array.from(cells).indexOf(event.target)] === "number"){
+                if(singlePlayer) {
+                    changeTurn(Array.from(cells).indexOf(event.target), player1);
+                    if(!checkDraw()) changeTurn(bestSpot(), player2);
+                }
+                else {
+                    if(!checkDraw()) changeTurn(Array.from(cells).indexOf(event.target), turn);
+                }
+            }
         }
+    }
+
+    // Function that chooses the best spot for the game
+    const bestSpot = () => {
+        return hardMode(origBoard, player2).index;
+    }
+
+    // Function that will handle the unbeateable AI 
+    const hardMode = (board, currPlayer) => {
+        let availSpots = emptyFields(board);
+        if(checkWin(board, currPlayer)) return {score: -10}
+        else if(checkWin(board, player2)) return {score: 10}
+        else if(availSpots.length === 0) return {score: 0}
+        let moves = [];
+        for(let i = 0; i < availSpots.length; i++){
+            let move = {};
+            move.index = board[availSpots[i]];
+            board[availSpots[i]] = currPlayer;
+            if(currPlayer === player2) {
+                let result = hardMode(board, player1);
+                move.score = result.score;
+            } else {
+                let result = hardMode(board, player2);
+                move.score = result.score;
+            }
+            board[availSpots[i]] = move.index;
+            moves.push(move)
+        }
+        let bestMove;
+        if(currPlayer === player2) {
+            let bestScore = -10000;
+            for(let i = 0; i < moves.length; i++){
+                if(moves[i].score > bestScore) {
+                    bestScore = moves[i].score
+                    bestMove = i;
+                }
+            }
+        }
+        else {
+            let bestScore = 10000;
+            for(let i = 0; i < moves.length; i++){
+                if(moves[i].score < bestScore) {
+                    bestScore = moves[i].score
+                    bestMove = i;
+                }
+            }
+        }
+
+        return moves[bestMove];
+    }  
+
+    // Function that checks for all empty fields
+    const emptyFields = () => {
+        return origBoard.filter(field => typeof field === "number");
+    }
+
+    // Function that will check if all fields have been filled
+    const checkDraw = () => {
+        if(emptyFields().length === 0) {
+            setDraw(true);
+            return true;
+        }
+        return false;
     }
 
     // Function taht will handle the turn change
@@ -57,7 +129,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
         cells[index].classList.add(currentPlayer);
         let gameWon = checkWin(origBoard, currentPlayer)
         if(gameWon) setGameOver(true);
-        else setTurn(currentPlayer === "x" ? player2 : player1)
+        else if (!singlePlayer) setTurn(currentPlayer === "x" ? player2 : player1);
     }
 
     // Function that checks if the player won

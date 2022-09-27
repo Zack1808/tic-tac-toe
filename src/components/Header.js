@@ -10,7 +10,7 @@ import '../css/Header.css';
 const Header = ({ setTurn }) => {
 
     const handleClick = () => {
-        setTurn(true);
+        setTurn("x");
     }
 
     return ( 
