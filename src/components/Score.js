@@ -11,7 +11,7 @@ const Score = ({ turn, scoreX, scoreO }) => {
             <div className="current-turn">
                 <p>Current turn:</p>
                 {
-                    turn ? (
+                    turn === "x" ? (
                         <p>Player X</p>
                     ) : (
                         <p>Player O</p>

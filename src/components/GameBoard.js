@@ -14,6 +14,8 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     const [gameOver, setGameOver] = useState(false);
     const [origBoard, setOrigBoard] = useState();
     const [draw, setDraw] = useState(false);
+    const [scoreX, setScoreX] = useState(0);
+    const [scoreO, setScoreO] = useState(0);
     const player1 = "x"; const player2 = "circle";
     const winningFields = [
         [0, 1, 2],
@@ -36,6 +38,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that will start the game
     const startGame = () => {
+        setTurn(player1);
         setGameOver(false);
         setDraw(false);
         setOrigBoard(Array.from(Array(9).keys()))
@@ -83,7 +86,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
             if(win.every(field => typeof origBoard[field] !== "number")) count = 20;
             else {
                 win.forEach(field => {
-                    if(origBoard[field] == "x") count = count + 1;
+                    if(origBoard[field] === "x") count = count + 1;
                     if(origBoard[field] === "circle") count = count + 2;
                 })
             }
@@ -164,8 +167,11 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
         setOrigBoard(tempBoard)
         cells[index].classList.add(currentPlayer);
         let gameWon = checkWin(origBoard, currentPlayer)
-        if(gameWon) setGameOver(true);
-        else if (!singlePlayer) setTurn(currentPlayer === "x" ? player2 : player1);
+        if(gameWon) {
+            setGameOver(true);
+            currentPlayer === "x" ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
+        }
+        else setTurn(currentPlayer === "x" ? player2 : player1);
     }
 
     // Function that checks if the player won
@@ -185,7 +191,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     return (
         <>
             <div className={`game-board ${!gameOver && turn}`}>
-                {/* <Score turn={turn} scoreX={scoreX} scoreO={scoreO} /> */}
+                <Score turn={turn} scoreX={scoreX} scoreO={scoreO} />
                 <div className="game">
                     <div className="row">
                         <div className="field" data-value onClick={handleClick}></div>
@@ -204,9 +210,9 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                     </div>
                 </div>
             </div> 
-            {/* {
-                gameover ? <Modal setGameover={setGameover} turn={turn} setTurn={setTurn} fields={gameFields} setDraw={setDraw} draw={draw} singlePlayer={singlePlayer} setSinglePlayer={setSinglePlayer} /> : null
-            } */}
+            {
+                gameOver ? <Modal turn={turn} draw={draw} singlePlayer={singlePlayer} restart={startGame} /> : null
+            }
         </>      
     )
 };
