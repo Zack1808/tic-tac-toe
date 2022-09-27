@@ -30,6 +30,8 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
     // Will call the startGame function once the components have rendered
     useEffect(() => {
         startGame();
+        setSinglePlayer(JSON.parse(localStorage.getItem("ttt-single-player-mode")))
+        setGameMode(JSON.parse(localStorage.getItem("ttt-game-mode")))
     }, []);
 
     // Function that will start the game
@@ -60,7 +62,11 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
 
     // Function that chooses the best spot for the game
     const bestSpot = () => {
-        return hardMode(origBoard, player2).index;
+        if(gameMode === "easy") {
+            const availablespots = emptyFields()
+            return origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)])
+        }
+        if(gameMode === "hard") return hardMode(origBoard, player2).index;
     }
 
     // Function that will handle the unbeateable AI 
