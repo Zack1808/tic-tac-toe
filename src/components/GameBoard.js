@@ -36,156 +36,176 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
         setGameMode(JSON.parse(localStorage.getItem("ttt-game-mode")))
     }, []);
 
-    // Function that will start the game
-    const startGame = () => {
-        setTurn(player1);
-        setGameOver(false);
-        setDraw(false);
-        setOrigBoard(Array.from(Array(9).keys()))
-        cells.forEach(cell => {
-            cell.classList.remove(player1);
-            cell.classList.remove(player2);
-        })
-    }
+    /*
+    Functions that are handeled at the start of the game
+    */
 
-    // Function that will handle the field click event
-    const handleClick = (event) => {
-        if(!gameOver){
-            if(typeof origBoard[Array.from(cells).indexOf(event.target)] === "number"){
-                if(singlePlayer) {
-                    changeTurn(Array.from(cells).indexOf(event.target), player1);
-                    if(!checkDraw()) changeTurn(bestSpot(), player2);
+        // Function that will start the game
+        const startGame = () => {
+            setTurn(player1);
+            setGameOver(false);
+            setDraw(false);
+            setOrigBoard(Array.from(Array(9).keys()))
+            cells.forEach(cell => {
+                cell.classList.remove(player1);
+                cell.classList.remove(player2);
+            })
+        }
+
+    /* 
+    Functions used by the human player
+     */
+
+        // Function that will handle the field click event
+        const handleClick = (event) => {
+            if(!gameOver){
+                if(typeof origBoard[Array.from(cells).indexOf(event.target)] === "number"){
+                    if(singlePlayer) {
+                        changeTurn(Array.from(cells).indexOf(event.target), player1);
+                        if(!checkDraw()) changeTurn(bestSpot(), player2);
+                    }
+                    else {
+                        if(!checkDraw()) changeTurn(Array.from(cells).indexOf(event.target), turn);
+                    }
                 }
+            }
+        }
+
+        // Function taht will handle the turn change
+        const changeTurn = (index, currentPlayer) => {
+            let tempBoard = origBoard;
+            tempBoard[index] = currentPlayer;
+            setOrigBoard(tempBoard)
+            cells[index].classList.add(currentPlayer);
+            let gameWon = checkWin(origBoard, currentPlayer)
+            if(gameWon) {
+                setGameOver(true);
+                currentPlayer === "x" ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
+            }
+            else setTurn(currentPlayer === "x" ? player2 : player1);
+        }
+
+        // Function that checks for all empty fields
+        const emptyFields = () => {
+            return origBoard.filter(field => typeof field === "number");
+        }
+
+    /*
+    Functoins used by the AI
+     */
+
+        // Function that chooses the best spot for the game
+        const bestSpot = () => {
+            if(gameMode === "easy") return easyMode();
+            if(gameMode === "normal") return normalMode();
+            if(gameMode === "hard") return hardMode(origBoard, player2).index;
+        }
+
+    /*
+    Functions that will handle the different AI modes
+    */
+    
+        // Function that will handle the easy mode
+        const easyMode = () => {
+            const availablespots = emptyFields()
+            return origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)])
+        }
+
+        // Function that will handle the normal mode 
+        const normalMode = () => {
+            const availablespots = emptyFields();
+            let amount = [];
+            let move = origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)]);
+            winningFields.forEach(win => {
+                let count = 0;
+                if(win.every(field => typeof origBoard[field] !== "number")) count = 20;
                 else {
-                    if(!checkDraw()) changeTurn(Array.from(cells).indexOf(event.target), turn);
+                    win.forEach(field => {
+                        if(origBoard[field] === "x") count = count + 1;
+                        if(origBoard[field] === "circle") count = count + 2;
+                    })
                 }
+                amount.push(count);
+            })
+            console.log(amount)
+            if(amount.indexOf(4) > -1) {
+                winningFields[amount.indexOf(4)].forEach(i => typeof origBoard[i] === "number" && (move = i));
             }
-        }
-    }
-
-    // Function that chooses the best spot for the game
-    const bestSpot = () => {
-        if(gameMode === "easy") return easyMode();
-        if(gameMode === "normal") return normalMode();
-        if(gameMode === "hard") return hardMode(origBoard, player2).index;
-    }
-
-    // Function that will handle the easy mode
-    const easyMode = () => {
-        const availablespots = emptyFields()
-        return origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)])
-    }
-
-    // Function that will handle the normal mode 
-    const normalMode = () => {
-        const availablespots = emptyFields();
-        let amount = [];
-        let move = origBoard.indexOf(availablespots[Math.floor(Math.random() * availablespots.length)]);
-        winningFields.forEach(win => {
-            let count = 0;
-            if(win.every(field => typeof origBoard[field] !== "number")) count = 20;
-            else {
-                win.forEach(field => {
-                    if(origBoard[field] === "x") count = count + 1;
-                    if(origBoard[field] === "circle") count = count + 2;
-                })
+            else if(amount.indexOf(2) > -1){
+                winningFields[amount.indexOf(2)].forEach(i => typeof origBoard[i] === "number" && (move = i));
             }
-            amount.push(count);
-        })
-        console.log(amount)
-        if(amount.indexOf(4) > -1) {
-            winningFields[amount.indexOf(4)].forEach(i => typeof origBoard[i] === "number" && (move = i));
+            return move;
         }
-        else if(amount.indexOf(2) > -1){
-            winningFields[amount.indexOf(2)].forEach(i => typeof origBoard[i] === "number" && (move = i));
-        }
-        return move;
-    }
 
-    // Function that will handle the unbeateable AI 
-    const hardMode = (board, currPlayer) => {
-        let availSpots = emptyFields(board);
-        if(checkWin(board, currPlayer)) return {score: -10}
-        else if(checkWin(board, player2)) return {score: 10}
-        else if(availSpots.length === 0) return {score: 0}
-        let moves = [];
-        for(let i = 0; i < availSpots.length; i++){
-            let move = {};
-            move.index = board[availSpots[i]];
-            board[availSpots[i]] = currPlayer;
+        // Function that will handle the unbeateable AI 
+        const hardMode = (board, currPlayer) => {
+            let availSpots = emptyFields(board);
+            if(checkWin(board, currPlayer)) return {score: -10}
+            else if(checkWin(board, player2)) return {score: 10}
+            else if(availSpots.length === 0) return {score: 0}
+            let moves = [];
+            for(let i = 0; i < availSpots.length; i++){
+                let move = {};
+                move.index = board[availSpots[i]];
+                board[availSpots[i]] = currPlayer;
+                if(currPlayer === player2) {
+                    let result = hardMode(board, player1);
+                    move.score = result.score;
+                } else {
+                    let result = hardMode(board, player2);
+                    move.score = result.score;
+                }
+                board[availSpots[i]] = move.index;
+                moves.push(move)
+            }
+            let bestMove;
             if(currPlayer === player2) {
-                let result = hardMode(board, player1);
-                move.score = result.score;
-            } else {
-                let result = hardMode(board, player2);
-                move.score = result.score;
-            }
-            board[availSpots[i]] = move.index;
-            moves.push(move)
-        }
-        let bestMove;
-        if(currPlayer === player2) {
-            let bestScore = -10000;
-            for(let i = 0; i < moves.length; i++){
-                if(moves[i].score > bestScore) {
-                    bestScore = moves[i].score
-                    bestMove = i;
+                let bestScore = -10000;
+                for(let i = 0; i < moves.length; i++){
+                    if(moves[i].score > bestScore) {
+                        bestScore = moves[i].score
+                        bestMove = i;
+                    }
                 }
             }
-        }
-        else {
-            let bestScore = 10000;
-            for(let i = 0; i < moves.length; i++){
-                if(moves[i].score < bestScore) {
-                    bestScore = moves[i].score
-                    bestMove = i;
+            else {
+                let bestScore = 10000;
+                for(let i = 0; i < moves.length; i++){
+                    if(moves[i].score < bestScore) {
+                        bestScore = moves[i].score
+                        bestMove = i;
+                    }
                 }
             }
-        }
 
-        return moves[bestMove];
-    }  
+            return moves[bestMove];
+        }  
+    
+    /*
+    Functions that will check if the current status of the game
+    */
 
-    // Function that checks for all empty fields
-    const emptyFields = () => {
-        return origBoard.filter(field => typeof field === "number");
-    }
-
-    // Function that will check if all fields have been filled
-    const checkDraw = () => {
-        if(emptyFields().length === 0) {
-            setDraw(true);
-            return true;
-        }
-        return false;
-    }
-
-    // Function taht will handle the turn change
-    const changeTurn = (index, currentPlayer) => {
-        let tempBoard = origBoard;
-        tempBoard[index] = currentPlayer;
-        setOrigBoard(tempBoard)
-        cells[index].classList.add(currentPlayer);
-        let gameWon = checkWin(origBoard, currentPlayer)
-        if(gameWon) {
-            setGameOver(true);
-            currentPlayer === "x" ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
-        }
-        else setTurn(currentPlayer === "x" ? player2 : player1);
-    }
-
-    // Function that checks if the player won
-    const checkWin = (board, currentPlayer) => {
-        let placed = board.reduce((acc, elem, i) => (elem === currentPlayer) ? acc.concat(i) : acc, []);
-        let gameWon = null;
-        for(let [index, win] of winningFields.entries()) {
-            if(win.every(element => placed.indexOf(element) > -1)) {
-                gameWon = {index: index, currPlayer: currentPlayer};
-                break;
+        // Function that will check if all fields have been filled
+        const checkDraw = () => {
+            if(emptyFields().length === 0) {
+                setDraw(true);
+                return true;
             }
+            return false;
         }
 
-        return gameWon;
+        // Function that checks if the player won
+        const checkWin = (board, currentPlayer) => {
+            let placed = board.reduce((acc, elem, i) => (elem === currentPlayer) ? acc.concat(i) : acc, []);
+            let gameWon = null;
+            for(let [index, win] of winningFields.entries()) {
+                if(win.every(element => placed.indexOf(element) > -1)) {
+                    gameWon = {index: index, currPlayer: currentPlayer};
+                    break;
+                }
+            }
+
+            return gameWon;
     }
 
     return (
