@@ -68,7 +68,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                         }
                     }
                     else {
-                        if(!checkDraw()) changeTurn(Array.from(cells).indexOf(event.target), turn);
+                        changeTurn(Array.from(cells).indexOf(event.target), turn);
                     }
                 }
             }
@@ -85,7 +85,14 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                 setGameOver(true);
                 currentPlayer === "x" ? setScoreX(scoreX + 1) : setScoreO(scoreO + 1)
             }
-            else setTurn(currentPlayer === "x" ? player2 : player1);
+            else {
+                if(singlePlayer){
+                    if(!checkDraw()) setTurn(currentPlayer === "x" ? player2 : player1)
+                }
+                else {
+                    setTurn(currentPlayer === "x" ? player2 : player1)
+                }
+            };
         }
 
         // Function that checks for all empty fields
