@@ -91,6 +91,7 @@ const GameBoard = ({ turn, setTurn, singlePlayer, gameMode, setGameMode, setSing
                 }
                 else {
                     setTurn(currentPlayer === "x" ? player2 : player1)
+                    checkDraw();
                 }
             };
         }

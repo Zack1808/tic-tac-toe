@@ -1,29 +1,31 @@
 .header {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    width: 100%;
-    align-items: center;
-    position: fixed;
-    top: 0
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  width: 100%;
+  align-items: center;
+  position: fixed;
+  top: 0;
 }
 
 .header a {
-    text-decoration: none;
-    cursor: pointer;
-    color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+  color: #000;
 }
 
 .title {
-    display: flex;
-    font-family: 'Rubik Dirt', cursive;
-    justify-content: center;
-    align-items: center;
-    font-size: calc(1.5em + 2vw);
-    font-weight: 900;
-    padding: 10px 0;
+  display: flex;
+  font-family: "Rubik Dirt", cursive;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(1.5em + 2vw);
+  font-weight: 900;
+  transition: 0.5s ease-in-out;
+  padding: 10px 0;
 }
 
 .dark .title {
-    color: #fff !important;
+  color: #fff;
 }

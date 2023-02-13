@@ -1,20 +1,21 @@
 .menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
 }
 
-.menu h2{
-    font-family: 'Rubik Dirt', cursive;
-    font-size: calc(2em + 1vw) !important;
-    padding-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.menu h2 {
+  font-family: "Rubik Dirt", cursive;
+  font-size: calc(2em + 1vw) !important;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  transition: 0.5s ease-in-out;
+  justify-content: center;
 }
 
 .dark .menu h2 {
-    color: #fff !important;
+  color: #fff !important;
 }
