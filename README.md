@@ -52,7 +52,7 @@ If you want to run the app localy:
 
 `npm start`
 
-After execution, the localhost server will startup and a browser window will open, previewing the quiz game app.
+After execution, the localhost server will startup and a browser window will open, previewing the tic-tac-toe game app.
 
 ## Difficulty settings
 
